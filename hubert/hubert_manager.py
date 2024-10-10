@@ -3,14 +3,24 @@
 import os.path
 import shutil
 import urllib.request
+from typing import Optional
 
 import huggingface_hub
 
 
 class HuBERTManager:
+
     @staticmethod
-    def make_sure_hubert_installed(download_url: str = 'https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt', file_name: str = 'hubert.pt'):
-        install_dir = os.path.join('data', 'models', 'hubert')
+    def get_dir(install_dir: Optional[str] = None):
+        if install_dir is None:
+            return os.path.join('data', 'models', 'hubert')
+        return os.path.join(install_dir, 'data', 'models', 'hubert')
+
+    @staticmethod
+    def make_sure_hubert_installed(download_url: str = 'https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt',
+                                   file_name: str = 'hubert.pt',
+                                   base_dir: Optional[str] = None):
+        install_dir = HuBERTManager.get_dir(base_dir)
         if not os.path.isdir(install_dir):
             os.makedirs(install_dir, exist_ok=True)
         install_file = os.path.join(install_dir, file_name)
@@ -20,10 +30,11 @@ class HuBERTManager:
             print('Downloaded HuBERT')
         return install_file
 
-
     @staticmethod
-    def make_sure_tokenizer_installed(model: str = 'quantifier_hubert_base_ls960_14.pth', repo: str = 'GitMylo/bark-voice-cloning', local_file: str = 'tokenizer.pth'):
-        install_dir = os.path.join('data', 'models', 'hubert')
+    def make_sure_tokenizer_installed(model: str = 'quantifier_hubert_base_ls960_14.pth',
+                                      repo: str = 'GitMylo/bark-voice-cloning', local_file: str = 'tokenizer.pth',
+                                      base_dir: Optional[str] = None):
+        install_dir = HuBERTManager.get_dir(base_dir)
         if not os.path.isdir(install_dir):
             os.makedirs(install_dir, exist_ok=True)
         install_file = os.path.join(install_dir, local_file)

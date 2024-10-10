@@ -11,10 +11,10 @@ import huggingface_hub
 class HuBERTManager:
 
     @staticmethod
-    def get_dir(install_dir: Optional[str] = None):
-        if install_dir is None:
+    def get_dir(base_dir: Optional[str] = None):
+        if base_dir is None:
             return os.path.join('data', 'models', 'hubert')
-        return os.path.join(install_dir, 'data', 'models', 'hubert')
+        return os.path.normpath(os.path.join(base_dir, 'data', 'models', 'hubert'))
 
     @staticmethod
     def make_sure_hubert_installed(download_url: str = 'https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt',
